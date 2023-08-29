@@ -24,7 +24,6 @@ function App() {
   const [valueSearchList, setValueSearchList] = useState([])
 
   const [valueInput, setValueInput] = useState('');
-  const [valueListItem, setValueListItem] = useState("")
 
   const [isSpinnerActive, setSpinnerActive] = useState(true);
   const [isSearch, setSearch] = useState(false);
@@ -42,15 +41,15 @@ function App() {
 
   const getCurrentWeather = (url = `http://api.weatherapi.com/v1/forecast.json?key=de246ed5fd28428b862142841232707&q=Warsaw&days=7`) => {
     setSpinnerActive(true)
-
-    fetch(url)
+ try{
+  fetch(url)
       .then(resp => resp.json())
       .then(data => {
         setCity(data.location.name);
         setChanceOfRain (data.forecast.forecastday[0].day.daily_chance_of_rain);
         setTemperature(data.current.temp_c);
         setUrl(`https:${data.current.condition.icon}`);
-  
+        
         setFeelsLike(data.current.feelslike_c);
         setWind(data.current.wind_kph);
         setUV(data.current.uv);
@@ -79,7 +78,9 @@ function App() {
           })
         setValueAsideWeekForecast(forecastWeek);  
       })
-      
+ }catch(e){
+  console.error(e)
+ } 
       setSpinnerActive(false)
   }
   const getUserLocation = () => {
